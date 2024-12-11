@@ -10,6 +10,14 @@ const port = 1125;
 
 app.use(morgan('dev'));
 
+// CORS 설정
+app.use((req, res, next) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 // MySQL 연결 설정
 const db = mysql.createConnection({
   host: 'localhost',
@@ -18,7 +26,7 @@ const db = mysql.createConnection({
   // database: 'popsopt1'
   password: 'asdf123 ',
   database: 'popsopt'
-});
+});  
 
 db.connect((err) => {
   if (err) {
@@ -31,6 +39,7 @@ db.connect((err) => {
 // Multer 설정
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    // 
     cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
